@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Цветы B2B WebApp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="app">
+  <!-- Onboarding / приветствие -->
+  <div id="onboarding" class="overlay hidden">
+    <div class="overlay-panel">
+      <h1>Добро пожаловать 👋</h1>
+      <p class="muted">
+        Это B2B-платформа для оптовых закупок живых цветов по России, Армении и Китаю.
+      </p>
+
+      <div class="onb-step" id="onb-step-1">
+        <h2>Что вы можете здесь делать</h2>
+        <ul class="bullet-list">
+          <li>Смотреть актуальный каталог позиций</li>
+          <li>Собирать заказы в пару нажатий</li>
+          <li>Оформлять доставку / самовывоз</li>
+          <li>Фиксировать оплату и статус заказа</li>
+        </ul>
+        <button class="btn primary" id="onb-next-1">Далее</button>
+      </div>
+
+      <div class="onb-step hidden" id="onb-step-2">
+        <h2>Коротко о нас</h2>
+        <p class="muted">
+          Мы работаем как посредники между цветочными магазинами и поставщиками.
+          Закрываем поставки по всей России (юг, Поволжье, Уфа, до Минска),
+          флагманские направления — <b>Россия</b> и <b>Армения</b>, а также
+          поставки из <b>Китая под заказ</b>.
+        </p>
+        <p class="muted">
+          На старте работаем максимально просто и быстро: оплата на карту,
+          закрепление товара за вами и отгрузка через ТК или авиа.
+        </p>
+        <button class="btn primary" id="onb-next-2">Перейти в приложение</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-main">
+      <div>
+        <div class="app-logo">Цветы B2B</div>
+        <div class="header-subtitle" id="headerSubtitle">Привет, магазин!</div>
+      </div>
+      <button class="icon-btn" id="openFAQBtn" aria-label="FAQ">
+        ?
+      </button>
+    </div>
+  </header>
+
+  <!-- Main screens -->
+  <main class="app-main">
+    <!-- HOME -->
+    <section class="screen" id="screen-home" data-screen>
+      <div class="banner">
+        <div class="banner-title">Свежий приход</div>
+        <div class="banner-text">
+          Горячие позиции со склада. Количество ограничено.
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h2>Быстрые действия</h2>
+        </div>
+        <div class="quick-actions">
+          <button class="qa-card" data-nav-target="screen-catalog">
+            <span>Перейти в каталог</span>
+            <small>Выбирайте позиции и собирайте заказ</small>
+          </button>
+          <button class="qa-card" id="repeatLastOrderBtn">
+            <span>Повторить последний заказ</span>
+            <small>Быстро, на основе истории</small>
+          </button>
+          <button class="qa-card" data-nav-target="screen-orders">
+            <span>Мои заказы</span>
+            <small>Статусы, суммы, накладные</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h2>Горячее сейчас на складе</h2>
+        </div>
+        <div class="cards-row" id="hotProductsRow">
+          <!-- сюда рендерятся горячие товары -->
+        </div>
+      </div>
+    </section>
+
+    <!-- CATALOG -->
+    <section class="screen hidden" id="screen-catalog" data-screen>
+      <div class="section">
+        <div class="section-header">
+          <h2>Каталог</h2>
+        </div>
+
+        <div class="segmented">
+          <button class="segmented-btn active" data-catalog-mode="hot">🔥 Горячее</button>
+          <button class="segmented-btn" data-catalog-mode="stock">🟢 Наличие</button>
+          <button class="segmented-btn" data-catalog-mode="preorder">🟡 Под заказ</button>
+        </div>
+
+        <div class="filters-row">
+          <select id="filterCountry">
+            <option value="">Все страны</option>
+            <option value="Россия">Россия</option>
+            <option value="Армения">Армения</option>
+            <option value="Китай">Китай</option>
+            <option value="Кения">Кения</option>
+            <option value="Эквадор">Эквадор</option>
+          </select>
+          <select id="filterCategory">
+            <option value="">Все категории</option>
+            <option value="Роза">Розы</option>
+            <option value="Хризантема">Хризантема</option>
+            <option value="Эустома">Эустома</option>
+            <option value="Альстромерия">Альстромерия</option>
+            <option value="Гербера">Гербера</option>
+          </select>
+          <select id="filterLength">
+            <option value="">Длина</option>
+            <option value="40">40 см</option>
+            <option value="50">50 см</option>
+            <option value="60">60 см</option>
+            <option value="70">70 см</option>
+          </select>
+        </div>
+
+        <div id="catalogList" class="cards-column">
+          <!-- сюда рендерятся товары -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ORDERS -->
+    <section class="screen hidden" id="screen-orders" data-screen>
+      <div class="section">
+        <div class="section-header">
+          <h2>Мои заказы</h2>
+        </div>
+        <div id="ordersList" class="cards-column">
+          <!-- список заказов -->
+        </div>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section class="screen hidden" id="screen-profile" data-screen>
+      <div class="section">
+        <div class="section-header">
+          <h2>Профиль</h2>
+        </div>
+        <div class="card">
+          <label class="field-label">Название магазина</label>
+          <input id="profileShopName" type="text" placeholder="Магазин 'Розочка'" />
+          <label class="field-label">Город</label>
+          <input id="profileCity" type="text" placeholder="Город" />
+          <label class="field-label">Телефон</label>
+          <input id="profilePhone" type="tel" placeholder="+7" />
+          <button class="btn secondary" id="saveProfileBtn">Сохранить профиль</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h2>О нас</h2>
+        </div>
+        <div class="card">
+          <p class="muted">
+            Мы — B2B-сервис по закупке срезанных цветов. Работаем как посредники между
+            магазинами и поставщиками.
+          </p>
+          <p class="muted">
+            География: закрываем поставки по всей России (особенно юг, Поволжье, Уфа),
+            а также возим до Минска.
+          </p>
+          <p class="muted">
+            Флагманские направления: <b>Россия</b>, <b>Армения</b> (крупный опт по розам)
+            и поставки из <b>Китая под заказ</b>.
+          </p>
+          <p class="muted">
+            На старте работаем максимально быстро: оплата на карту, закрепление товара
+            за вами и отгрузка через ТК или авиа.
+          </p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h2>FAQ</h2>
+        </div>
+        <div class="card">
+          <details>
+            <summary>Как оформить первый заказ?</summary>
+            <p class="muted">
+              Перейдите в каталог, добавьте позиции в корзину, заполните данные по
+              доставке и оплатите заказ. После загрузки чека мы закрепим товар за вами.
+            </p>
+          </details>
+          <details>
+            <summary>Можно ли работать по ИП и с НДС?</summary>
+            <p class="muted">
+              Да, можем выставлять счета от ИП с НДС. На старте по умолчанию работаем с
+              оплатой на карту для скорости. При необходимости официальных документов просто скажите менеджеру.
+            </p>
+          </details>
+          <details>
+            <summary>Что делать, если пришёл брак?</summary>
+            <p class="muted">
+              Откройте нужный заказ в разделе «Мои заказы» и нажмите «Сообщить о браке».
+              Опишите проблему и приложите фото — мы решим вопрос индивидуально.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Корзина (панель) -->
+  <div id="cartBar" class="cart-bar hidden">
+    <div>
+      <span id="cartSummary">0 позиций • 0 шт • 0 ₽</span>
+    </div>
+    <button class="btn primary" id="openCartBtn">Корзина</button>
+  </div>
+
+  <!-- Модалка корзины -->
+  <div id="cartModal" class="overlay hidden">
+    <div class="overlay-panel overlay-panel-large">
+      <div class="overlay-header">
+        <h2>Корзина</h2>
+        <button class="icon-btn" id="closeCartBtn">✕</button>
+      </div>
+      <div id="cartItemsContainer" class="cards-column">
+        <!-- позиции корзины -->
+      </div>
+
+      <div class="cart-total-block">
+        <div class="cart-total-line">
+          <span>Сумма без скидок</span>
+          <span id="cartSubtotal">0 ₽</span>
+        </div>
+        <div class="cart-total-line">
+          <span>Скидка по объёму (Армения, розы)</span>
+          <span id="cartDiscount">0 ₽</span>
+        </div>
+        <div class="cart-total-line cart-total-main">
+          <span>Итого к оплате</span>
+          <span id="cartTotal">0 ₽</span>
+        </div>
+      </div>
+
+      <div class="cart-checkout-block">
+        <label class="field-label">Способ получения</label>
+        <select id="checkoutDeliveryType">
+          <option value="delivery">Доставка</option>
+          <option value="pickup">Самовывоз</option>
+          <option value="tk">ТК / Авиа</option>
+        </select>
+
+        <label class="field-label">Комментарий к заказу</label>
+        <textarea id="checkoutComment" rows="2" placeholder="Например: отгрузка завтра до 14:00"></textarea>
+
+        <button class="btn primary" id="checkoutBtn">Перейти к оплате</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модалка оплаты -->
+  <div id="paymentModal" class="overlay hidden">
+    <div class="overlay-panel">
+      <div class="overlay-header">
+        <h2>Оплата заказа</h2>
+        <button class="icon-btn" id="closePaymentBtn">✕</button>
+      </div>
+      <p class="muted">
+        К оплате: <b id="paymentAmount">0 ₽</b>
+      </p>
+      <p class="muted">
+        Оплатите по СБП / на карту и загрузите скрин — мы закрепим товар за вами.
+      </p>
+
+      <div class="card">
+        <h3>Оплата по СБП / карте</h3>
+        <p class="muted small">
+          Здесь позже будет QR или реквизиты. Сейчас просто прикрепите скрин оплаты.
+        </p>
+        <label class="field-label">Скрин оплаты</label>
+        <input id="paymentScreenshot" type="file" accept="image/*" />
+      </div>
+
+      <button class="btn primary" id="confirmPaymentBtn">Я оплатил</button>
+    </div>
+  </div>
+
+  <!-- Модалка FAQ (иконка в хэдере) -->
+  <div id="faqModal" class="overlay hidden">
+    <div class="overlay-panel">
+      <div class="overlay-header">
+        <h2>Краткая инструкция</h2>
+        <button class="icon-btn" id="closeFAQBtn">✕</button>
+      </div>
+      <ol class="bullet-list">
+        <li>Заполните профиль магазина в разделе «Профиль».</li>
+        <li>Перейдите в «Каталог» и выберите нужные позиции.</li>
+        <li>Соберите корзину и оформите заказ.</li>
+        <li>Оплатите заказ и загрузите скрин оплаты.</li>
+        <li>Отслеживайте статус в разделе «Мои заказы».</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Bottom nav -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-nav-target="screen-home">
+      <span>Главная</span>
+    </button>
+    <button class="nav-btn" data-nav-target="screen-catalog">
+      <span>Каталог</span>
+    </button>
+    <button class="nav-btn" data-nav-target="screen-orders">
+      <span>Заказы</span>
+    </button>
+    <button class="nav-btn" data-nav-target="screen-profile">
+      <span>Профиль</span>
+    </button>
+  </nav>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
